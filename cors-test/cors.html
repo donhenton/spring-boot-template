@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+        <style>
+            body
+            {
+
+                margin: 50px;
+
+            }
+
+            #res-area
+            {
+                width: 650px;
+                height: 250px;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <textarea id="res-area"></textarea>
+
+        <hr/>
+        <p><button onclick="getProps()">Get Props</button></p>
+        <script>
+
+            function getProps()
+            {
+                $.ajax({
+                    url: "http://localhost:31022/props/all/properties"
+                }).then(function (data, status, jqxhr) {
+                     $('#res-area').val(data)
+                });
+            }
+
+        </script>
+
+    </body>
+</html>
