@@ -12,4 +12,5 @@ docker can't find the app.properties file in the jar it needs to be broken out i
 
 ## OKTA
 
-* https://developer.okta.com/blog/2019/06/20/spring-preauthorize
+* <https://developer.okta.com/blog/2019/06/20/spring-preauthorize>
+* <https://developer.okta.com/blog/2019/05/15/spring-boot-login-options?_ga=2.22305208.289336937.1582567334-154979438.1582567334>
