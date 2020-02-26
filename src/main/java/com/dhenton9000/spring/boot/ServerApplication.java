@@ -1,14 +1,17 @@
-package com.dhenton9000.spring.boot.server;
+package com.dhenton9000.spring.boot;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
-import org.springframework.boot.web.servlet.ErrorPage;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import springfox.documentation.builders.ApiInfoBuilder;
 import static springfox.documentation.builders.PathSelectors.regex;
@@ -29,9 +32,8 @@ public class ServerApplication {
 }
 
 
+ 
 
-//allows using a nonstandard props file ie application.properties
-@PropertySource(value={"classpath:init-boot.properties"}, ignoreResourceNotFound = true) 
 @SpringBootApplication
 @EnableSwagger2
         
@@ -41,11 +43,17 @@ class CdnBoot {
 
     private static final Logger LOG = LoggerFactory.getLogger(ServerApplication.class);
 
-    public CdnBoot(@Value("${server.port}") String s,@Value("${spring.freemarker.template-loader-path}") String fPath) {
+    public CdnBoot(@Value("${server.port}") String port,
+            
+            @Value("${okta.oauth2.issuer}") String issuer
+            
+            
+            ) {
 
-        serverPort = s;
-        LOG.info("starting server on port " + serverPort);
-        LOG.info("freemark location "+fPath);
+        serverPort = port;
+        LOG.info("starting server on port " + serverPort+ " "+issuer);
+        
+       
     }
 
     @Bean
@@ -63,14 +71,14 @@ class CdnBoot {
         return UiConfiguration.DEFAULT;
     }
 
-    @Bean
-    public EmbeddedServletContainerCustomizer containerCustomizer() {
-        return (container -> {
-            ErrorPage custom404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/404");
-            container.addErrorPages(custom404Page);
-
-        });
+  @Bean
+    public ConfigurableServletWebServerFactory webServerFactory() {
+        TomcatServletWebServerFactory factory = new TomcatServletWebServerFactory();
+         org.springframework.boot.web.server.ErrorPage custom404Page = new org.springframework.boot.web.server.ErrorPage(HttpStatus.NOT_FOUND, "/404");
+        factory.addErrorPages(custom404Page);
+        return factory;
     }
+    
 
     private ApiInfo apiInfo() {
         Contact c = new Contact("Don Henton", "http://donhenton.com", null);
