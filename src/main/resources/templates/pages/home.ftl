@@ -21,6 +21,7 @@
         <ul>
             <li><a href="/swagger-ui.html">Swagger Docs</a></li>
             <li><a href="/fred.html">Resource Not Found Demo</a></li>
+            <li><a href="/restricted/hellojwt">Restricted Demo Page</a></li>
         </ul>
 
         <p>This is a minimal spring boot application that can serve web pages and rest services. The pom file must be used as is.
